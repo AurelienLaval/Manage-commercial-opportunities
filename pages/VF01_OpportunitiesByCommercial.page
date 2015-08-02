@@ -1,0 +1,56 @@
+<apex:page controller="VFC01_OpportunitiesByCommercial">
+
+    <apex:form >
+    
+        <apex:pageBlock >
+        
+            <apex:pageBlockButtons location="both">
+                <apex:commandButton value="{!$Label.Labs_Sf_Valider}" action="{!updateData}" />
+            </apex:pageBlockButtons>
+            
+            <div>
+            	<apex:outputText value="{!$Label.Labs_Sf_Select_Month_Year} : " />
+	            <apex:inputField value="{!theFakeCommercialObjectif.Month__c}" />
+	            <apex:inputField value="{!theFakeCommercialObjectif.Year__c}" />
+	            <apex:commandButton value="{!$Label.Labs_Sf_Select_Opportunities}" action="{!refreshOpportunities}" />
+            </div>
+            
+            <apex:repeat value="{!wrapperList}" var="aWrapperClass">
+        
+                <apex:pageBlockSection title="{!aWrapperClass.theUser.Name}">
+                
+                    <table>
+                        <tr>
+                            <td><apex:inputField value="{!aWrapperClass.theObjectif.Objectif__c}" style="width:100px;" /></td>
+                        </tr>
+                        <tr>
+                            <td><apex:outputField value="{!aWrapperClass.theObjectif.Percent_in_progress__c}" /></td>
+                        </tr>
+                    </table>
+                    
+                    <apex:pageBlockTable value="{!aWrapperClass.theOpportunityList}" var="anOpportunity">
+                    
+                        <apex:column value="{!anOpportunity.Account.Name}" >
+                            <apex:facet name="header">{!$ObjectType.Account.Fields.Name.Label}</apex:facet>
+                        </apex:column>
+                        <apex:column value="{!anOpportunity.Name}" >
+                            <apex:facet name="header">{!$ObjectType.Opportunity.Fields.Name.Label}</apex:facet>
+                        </apex:column>
+                        <apex:column value="{!anOpportunity.Amount}" >
+                            <apex:facet name="header">{!$ObjectType.Opportunity.Fields.Amount.Label}</apex:facet>
+                        </apex:column>
+                        <apex:column value="{!anOpportunity.CloseDate}" >
+                            <apex:facet name="header">{!$ObjectType.Opportunity.Fields.CloseDate.Label}</apex:facet>
+                        </apex:column>
+                    
+                    </apex:pageBlockTable>
+                
+                </apex:pageBlockSection>
+            
+            </apex:repeat>
+        
+        </apex:pageBlock>
+    
+    </apex:form>
+
+</apex:page>
