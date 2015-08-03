@@ -5,14 +5,14 @@
         <apex:pageBlock >
         
             <apex:pageBlockButtons location="both">
-                <apex:commandButton value="{!$Label.Labs_Sf_Valider}" action="{!updateData}" />
+                <apex:commandButton value="Update" action="{!updateData}" />
             </apex:pageBlockButtons>
             
             <div>
-            	<apex:outputText value="{!$Label.Labs_Sf_Select_Month_Year} : " />
-	            <apex:inputField value="{!theFakeCommercialObjectif.Month__c}" />
-	            <apex:inputField value="{!theFakeCommercialObjectif.Year__c}" />
-	            <apex:commandButton value="{!$Label.Labs_Sf_Select_Opportunities}" action="{!refreshOpportunities}" />
+                <apex:outputText value="Select a month and a year : " />
+                <apex:inputField value="{!theFakeCommercialObjectif.Month__c}" />
+                <apex:inputField value="{!theFakeCommercialObjectif.Year__c}" />
+                <apex:commandButton value="Select opportunities" action="{!refreshOpportunities}" />
             </div>
             
             <apex:repeat value="{!wrapperList}" var="aWrapperClass">
@@ -24,7 +24,13 @@
                             <td><apex:inputField value="{!aWrapperClass.theObjectif.Objectif__c}" style="width:100px;" /></td>
                         </tr>
                         <tr>
+                            <td><apex:outputField value="{!aWrapperClass.theObjectif.Objectif_in_progress__c}" /></td>
+                        </tr>
+                        <tr>
                             <td><apex:outputField value="{!aWrapperClass.theObjectif.Percent_in_progress__c}" /></td>
+                        </tr>
+                        <tr>
+                            <td><apex:outputText value="{!aWrapperClass.theObjectif.Objectif_level__c}" escape="false" /></td>
                         </tr>
                     </table>
                     

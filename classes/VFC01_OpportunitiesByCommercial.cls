@@ -1,25 +1,25 @@
 public with sharing class VFC01_OpportunitiesByCommercial {
 
-	public Commercial_objectif__c theFakeCommercialObjectif{get; set;}
+    public Commercial_objectif__c theFakeCommercialObjectif{get; set;}
     public List<WrapperClass> wrapperList{get; set;}
     private List<User> commercialList;
     private List<Commercial_objectif__c> theObjectifList;
     private Date dateToday;
     public static map<Integer, String> monthMap = new map<Integer, String>{
-		1 => 'January',
-		2 => 'February',
-		3 => 'March',
-		4 => 'April',
-		5 => 'May',
-		6 => 'June',
-		7 => 'July',
-		8 => 'August',
-		9 => 'September',
-		10 => 'October',
-		11 => 'November',
-		12 => 'December'
-	};
-	
+        1 => 'January',
+        2 => 'February',
+        3 => 'March',
+        4 => 'April',
+        5 => 'May',
+        6 => 'June',
+        7 => 'July',
+        8 => 'August',
+        9 => 'September',
+        10 => 'October',
+        11 => 'November',
+        12 => 'December'
+    };
+    
     public VFC01_OpportunitiesByCommercial(){
         this.theFakeCommercialObjectif = new Commercial_objectif__c();
         
@@ -38,7 +38,7 @@ public with sharing class VFC01_OpportunitiesByCommercial {
             
         try{   
             theObjectifList = [
-                SELECT Id, User__c, Month__c, Year__c, Objectif__c, Percent_in_progress__c, Objectif_in_progress__c, (SELECT Id, Name, CloseDate, Amount, Account.Id, Account.Name FROM Opportunities__r)
+                SELECT Id, User__c, Month__c, Year__c, Objectif__c, Percent_in_progress__c, Objectif_in_progress__c, Objectif_level__c, (SELECT Id, Name, CloseDate, Amount, Account.Id, Account.Name FROM Opportunities__r)
                 FROM Commercial_objectif__c
                 WHERE User__c IN :theCommercialList
                 AND Year__c = :theSelectedYear
@@ -54,10 +54,10 @@ public with sharing class VFC01_OpportunitiesByCommercial {
                     Commercial_objectif__c anObjectif = objectifMap.get(anUser.Id);
                     
                     result.add(new WrapperClass(
-	                    anUser,
-	                    anObjectif.Opportunities__r,
-	                    anObjectif
-	                ));
+                        anUser,
+                        anObjectif.Opportunities__r,
+                        anObjectif
+                    ));
                 }
             }
         }catch(Exception e){
@@ -78,11 +78,11 @@ public with sharing class VFC01_OpportunitiesByCommercial {
     /** Set the month and the year **/
     public void setMonthAndYear(){
         if(theFakeCommercialObjectif.Year__c == NULL || theFakeCommercialObjectif.Year__c.equals('')){
-        	theFakeCommercialObjectif.Year__c = String.valueOf(this.dateToday.year());
+            theFakeCommercialObjectif.Year__c = String.valueOf(this.dateToday.year());
         }
         
         if(theFakeCommercialObjectif.Month__c == NULL || theFakeCommercialObjectif.Month__c.equals('')){
-        	theFakeCommercialObjectif.Month__c = VFC01_OpportunitiesByCommercial.monthMap.get(this.dateToday.month());
+            theFakeCommercialObjectif.Month__c = VFC01_OpportunitiesByCommercial.monthMap.get(this.dateToday.month());
         }
     }
     
@@ -107,8 +107,6 @@ public with sharing class VFC01_OpportunitiesByCommercial {
             update this.theObjectifList;
             
             this.refreshOpportunities();
-            
-            this.displaySuccessMessage(System.Label.Labs_Sf_Data_Updated_Success);
         }catch(Exception e){
             this.displayErrorMessage(e.getMessage());
         }
@@ -144,10 +142,5 @@ public with sharing class VFC01_OpportunitiesByCommercial {
     /** Display an error message on the Visualforce page **/
     public void displayErrorMessage(String theErrorMessage){
         ApexPages.addMessage(new ApexPages.Message(ApexPages.Severity.Error,theErrorMessage));
-    }
-    
-    /** Display an success message on the Visualforce page **/
-    public void displaySuccessMessage(String theSuccessMessage){
-        ApexPages.addMessage(new ApexPages.Message(ApexPages.Severity.Confirm,theSuccessMessage));
     }
 }
