@@ -10,8 +10,6 @@ trigger OpportunityAfterUpdate on Opportunity (after update) {
 	}
 	
 	if(opportunitiesToExecute.size() > 0){
-		System.debug('*** Des opportunités ! : ' + opportunitiesToExecute.size());
-		
 		AP01_UpdateObjectifInProgress.updateObjectifInProgress(opportunitiesToExecute);
 	}
 }
